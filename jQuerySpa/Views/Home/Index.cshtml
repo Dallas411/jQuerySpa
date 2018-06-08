@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="index-page" class="jumbotron">
+    <div>
+        <div>Action link navigation (shortcut is 'a')</div>
+        @Html.ActionLink("Link to Table", "Table", "Home", null, new { data_shortcut = "a" })
+    </div>
+    <div>
+        <div>Navigation using javascript window.location</div>
+        <input id="navigate-button" type="button" class="btn" value="Navigate to Table" />
+    </div>
+    <div>
+        <div>GET form with value for Home/Index</div>
+        @using (Html.BeginForm("Table", "Home", FormMethod.Get))
+        {
+            @Html.TextBox("getText", "GET")
+            <input type="submit" value="Submit GET Form" />
+        }
+    </div>
+    <div>
+        <div>POST form with value for Home/Index, but redirects to Home/About</div>
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            @Html.TextBox("postText", "POST")
+            <input type="submit" value="POST with Redirect" />
+        }
+    </div>
+    <div>
+        <div>GET form for Home/About, submitting button value</div>
+        @using (Html.BeginForm("Table", "Home", FormMethod.Get))
+        {
+            <input type="submit" name="mySubmit" value="First" />
+            <input type="submit" name="mySubmit" value="Second" />
+            <input type="submit" value="Will not" />
+        }
+    </div>
+    <div>
+        <div>Action link to page with explicit layout</div>
+        @Html.ActionLink("Link to Contact", "Contact", "Home")
+    </div>
+    <div>
+        <div>Event attached to page, appends extra button</div>
+        <input id="clone-button" type="button" class="btn" value="Global click event" />
+    </div>
+    <div>
+        <div>Javascript state</div>
+        Click counter: <input id="click-counter" type="text" />
+        Interval counter: <input id="interval-counter" type="text" />
+    </div>
+</div>
+
+@section scripts
+    {
+    <script>
+        $(function() {
+            $('#navigate-button').click(function () {
+                window.navigate('@Url.Action("Table", "Home")');
+            });
+            $('body').on('click', '#clone-button', function() {
+                $(this).after($(this).clone());
+            });
+
+            $('#click-counter').val(clickCount);
+            $('#index-page').click(function () {
+                window.clickCount++;
+                $('#click-counter').val(window.clickCount);
+            });
+
+            $('#interval-counter').val(window.times.length);
+            setInterval(function () {
+                var now = new Date();
+                while (window.times.length > 0) {
+                    var front = window.times[0];
+                    if (now.getTime() - front.getTime() > 1000) {
+                        times.shift();
+                    } else {
+                        break;
+                    }
+                }
+                times.push(now);
+                $('#interval-counter').val(window.times.length);
+            }, 1000);
+        })
+    </script>
+}

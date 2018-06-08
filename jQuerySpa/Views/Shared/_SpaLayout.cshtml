@@ -1,0 +1,11 @@
+﻿<div id="body">
+    <div style="display:none">
+        <div id="title-div">@ViewBag.Title</div>
+        <div id="username-div">@DateTime.Now</div>
+    </div>
+
+    @* Breadcrumb here *@
+
+    @RenderBody()
+    @RenderSection("scripts", false)
+</div>

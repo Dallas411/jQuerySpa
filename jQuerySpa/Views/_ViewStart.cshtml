@@ -1,0 +1,9 @@
+﻿@*is Ajax Request?*@
+@if (Context.Request.Headers["x-requested-with"] == "XMLHttpRequest")
+{
+    Layout = "~/Views/Shared/_SpaLayout.cshtml";
+}
+else
+{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
